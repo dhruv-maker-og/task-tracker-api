@@ -1,0 +1,22 @@
+{
+  "name": "task-tracker-api",
+  "version": "1.0.0",
+  "description": "A minimal Task Tracker REST API — demo project for GitHub Agent HQ",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": ["demo", "agent-hq", "github-copilot"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0",
+    "supertest": "^7.0.0"
+  }
+}
