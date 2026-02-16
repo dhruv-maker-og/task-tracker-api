@@ -11,6 +11,13 @@ export const getTasks = () => tasks;
 
 export const getTaskById = (id) => tasks.find((t) => t.id === id);
 
+export const toggleTask = (id) => {
+  const task = getTaskById(id);
+  if (!task) return null;
+  task.completed = !task.completed;
+  return task;
+};
+
 export const addTask = (title) => {
   const task = {
     id: nextId++,
