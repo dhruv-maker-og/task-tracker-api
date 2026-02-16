@@ -74,3 +74,25 @@ describe("DELETE /tasks/:id", () => {
     expect(res.body).toHaveProperty("error");
   });
 });
+
+describe("PATCH /tasks/:id", () => {
+  it("toggles a task from false to true", async () => {
+    const res = await request(app).patch("/tasks/1");
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id", 1);
+    expect(res.body.completed).toBe(true);
+  });
+
+  it("toggles a task from true to false", async () => {
+    const res = await request(app).patch("/tasks/2");
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id", 2);
+    expect(res.body.completed).toBe(false);
+  });
+
+  it("returns 404 for a non-existent task", async () => {
+    const res = await request(app).patch("/tasks/9999");
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("error", "Task not found");
+  });
+});
