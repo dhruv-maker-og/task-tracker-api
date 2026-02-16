@@ -27,3 +27,10 @@ export const deleteTask = (id) => {
   if (index === -1) return null;
   return tasks.splice(index, 1)[0];
 };
+
+export const toggleTask = (id) => {
+  const task = tasks.find((t) => t.id === id);
+  if (!task) return null;
+  task.completed = !task.completed;
+  return task;
+};

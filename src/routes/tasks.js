@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getTasks, getTaskById, addTask, deleteTask } from "../data/store.js";
+import { getTasks, getTaskById, addTask, deleteTask, toggleTask } from "../data/store.js";
 
 const router = Router();
 
@@ -36,6 +36,13 @@ router.delete("/:id", (req, res) => {
   res.status(204).end();
 });
 
-// NOTE: PATCH /tasks/:id to toggle completion is not implemented yet.
+// PATCH /tasks/:id — toggle task completion
+router.patch("/:id", (req, res) => {
+  const updated = toggleTask(Number(req.params.id));
+  if (!updated) {
+    return res.status(404).json({ error: "Task not found" });
+  }
+  res.json(updated);
+});
 
 export default router;
