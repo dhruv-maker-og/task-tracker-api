@@ -74,3 +74,34 @@ describe("DELETE /tasks/:id", () => {
     expect(res.body).toHaveProperty("error");
   });
 });
+
+describe("PATCH /tasks/:id", () => {
+  it("toggles a task from false to true", async () => {
+    const created = await request(app)
+      .post("/tasks")
+      .send({ title: "Toggle to true" });
+    const res = await request(app).patch(`/tasks/${created.body.id}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id", created.body.id);
+    expect(res.body.completed).toBe(true);
+  });
+
+  it("toggles a task from true to false", async () => {
+    const created = await request(app)
+      .post("/tasks")
+      .send({ title: "Toggle to false" });
+    const firstToggle = await request(app).patch(`/tasks/${created.body.id}`);
+    expect(firstToggle.status).toBe(200);
+    expect(firstToggle.body.completed).toBe(true);
+
+    const secondToggle = await request(app).patch(`/tasks/${created.body.id}`);
+    expect(secondToggle.status).toBe(200);
+    expect(secondToggle.body.completed).toBe(false);
+  });
+
+  it("returns 404 for a non-existent task", async () => {
+    const res = await request(app).patch("/tasks/9999");
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("error");
+  });
+});
