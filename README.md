@@ -94,6 +94,8 @@ curl http://localhost:3000/tasks/1
 }
 ```
 
+> **Note**: This endpoint returns only `id`, `title`, and `completed` fields. The `createdAt` field is not included in single task responses.
+
 **Error Response** (404 Not Found):
 ```json
 {
