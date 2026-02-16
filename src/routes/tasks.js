@@ -9,11 +9,11 @@ router.get("/", (_req, res) => {
 });
 
 // GET /tasks/:id — get a single task
-// BUG: does not handle the case where the task is not found,
-//      causing a 500 when accessing properties on undefined.
 router.get("/:id", (req, res) => {
   const task = getTaskById(Number(req.params.id));
-  // Intentionally missing: if (!task) return res.status(404).json(...)
+  if (!task) {
+    return res.status(404).json({ error: "Task not found" });
+  }
   res.json({ id: task.id, title: task.title, completed: task.completed });
 });
 

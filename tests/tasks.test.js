@@ -27,11 +27,10 @@ describe("GET /tasks/:id", () => {
     expect(res.body).toHaveProperty("title");
   });
 
-  it("returns 500 for a non-existent task (known bug)", async () => {
-    // This test documents the current broken behaviour.
-    // The expected fix is to return 404 with { error: "Task not found" }.
+  it("returns 404 for a non-existent task", async () => {
     const res = await request(app).get("/tasks/9999");
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({ error: "Task not found" });
   });
 });
 
