@@ -74,3 +74,39 @@ describe("DELETE /tasks/:id", () => {
     expect(res.body).toHaveProperty("error");
   });
 });
+
+describe("PATCH /tasks/:id", () => {
+  it("toggles a task from false to true", async () => {
+    // Create a task (completed defaults to false)
+    const created = await request(app)
+      .post("/tasks")
+      .send({ title: "Task to complete" });
+    expect(created.body.completed).toBe(false);
+
+    // Toggle it
+    const res = await request(app).patch(`/tasks/${created.body.id}`);
+    expect(res.status).toBe(200);
+    expect(res.body.completed).toBe(true);
+    expect(res.body.id).toBe(created.body.id);
+  });
+
+  it("toggles a task from true to false", async () => {
+    // Create a task and toggle it to true first
+    const created = await request(app)
+      .post("/tasks")
+      .send({ title: "Task to uncomplete" });
+    await request(app).patch(`/tasks/${created.body.id}`);
+
+    // Toggle it back to false
+    const res = await request(app).patch(`/tasks/${created.body.id}`);
+    expect(res.status).toBe(200);
+    expect(res.body.completed).toBe(false);
+    expect(res.body.id).toBe(created.body.id);
+  });
+
+  it("returns 404 for a non-existent task", async () => {
+    const res = await request(app).patch("/tasks/9999");
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("error", "Task not found");
+  });
+});
